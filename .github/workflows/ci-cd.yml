@@ -1,0 +1,27 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v5
+        with:
+          java-version: 21
+          distribution: 'temurin'
+
+      - name: Build with Maven and run tests
+        run: mvn -B package --file pom.xml
+        env:
+          CUCUMBER_PUBLISH_ENABLED: true
+
+      - name: Verify docker build
+        run: docker build .

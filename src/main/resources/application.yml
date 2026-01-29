@@ -1,0 +1,26 @@
+spring:
+  h2:
+    console:
+      enabled: false
+
+allowed-origins: http://localhost:3000
+default-password: password
+
+---
+
+spring:
+  jpa:
+    generate-ddl: true
+  config:
+    activate:
+      on-profile: prod
+
+allowed-origins: "https://my-production-domain.com,https://*.vercel.app"
+
+logging:
+  level:
+    org:
+      hibernate: error
+      springframework.core: error
+      springframework.web: error
+    root: error
