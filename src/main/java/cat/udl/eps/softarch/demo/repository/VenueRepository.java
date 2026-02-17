@@ -7,7 +7,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import cat.udl.eps.softarch.demo.domain.Venue;
 
 @RepositoryRestResource
-public interface VenueRepository extends CrudRepository<Venue, String>, PagingAndSortingRepository<Venue, String> {
+public interface VenueRepository extends CrudRepository<Venue, Long>, PagingAndSortingRepository<Venue, Long> {
 
 	List<Venue> findAll();
 
