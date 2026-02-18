@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.JoinColumn;
+
 
 @Entity
 @Table(name = "referees")
@@ -13,6 +15,7 @@ public class Referee extends Volunteer {
 	private boolean expert;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "supervises_table_id")
 	@JsonBackReference("table-referees")
 	private CompetitionTable supervisesTable;
 
