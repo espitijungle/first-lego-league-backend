@@ -121,6 +121,11 @@ public class VolunteerStepDefs {
         searchResults = floaterRepository.findByStudentCode(studentCode);
     }
 
+    @When("I search for floaters with name containing {string}")
+    public void searchByNameContaining(String text) {
+        searchResults = floaterRepository.findByNameContainingIgnoreCase(text);
+    }
+
 	@Then("I should find {int} floater(s) in the results")
 	public void verifySearchResultCount(int count) {
         assertNotNull(searchResults, "Search results is null");
