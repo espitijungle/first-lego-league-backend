@@ -1,5 +1,6 @@
 package cat.udl.eps.softarch.demo.domain;
 
+import org.jspecify.annotations.Nullable;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,4 +26,9 @@ public class MediaContent extends UriEntity<String> {
 	@ManyToOne
 	@JsonIdentityReference(alwaysAsId = true)
 	private Edition edition;
+
+	@Override
+	public @Nullable String getId() {
+		return url;
+	}
 }
