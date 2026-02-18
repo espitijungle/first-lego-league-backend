@@ -1,5 +1,6 @@
 package cat.udl.eps.softarch.demo.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -16,12 +17,13 @@ public class CompetitionTable extends UriEntity<String> {
 	@Id
 	private String id;
 
-	@OneToMany(mappedBy = "competitionTable")
+	@OneToMany(mappedBy = "competitionTable", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonManagedReference("table-matches")
 	private List<Match> matches = new ArrayList<>();
 
 	@OneToMany(mappedBy = "supervisesTable")
-	@Size(min = 2, max = 3, message = "A table must have between 2 and 3 referees")
-	@JsonManagedReference
+	@Size(max = 3, message = "A table can have a maximum of 3 referees")
+	@JsonManagedReference("table-referees")
 	private List<Referee> referees = new ArrayList<>();
 
 	public CompetitionTable() {}
@@ -49,5 +51,25 @@ public class CompetitionTable extends UriEntity<String> {
 
 	public void setReferees(List<Referee> referees) {
 		this.referees = referees;
+	}
+
+	public void addMatch(Match match) {
+		matches.add(match);
+		match.setCompetitionTable(this);
+	}
+
+	public void removeMatch(Match match) {
+		matches.remove(match);
+		match.setCompetitionTable(null);
+	}
+
+	public void addReferee(Referee referee) {
+		referees.add(referee);
+		referee.setSupervisesTable(this);
+	}
+
+	public void removeReferee(Referee referee) {
+		referees.remove(referee);
+		referee.setSupervisesTable(null);
 	}
 }

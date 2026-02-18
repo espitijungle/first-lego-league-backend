@@ -10,20 +10,20 @@ import jakarta.persistence.Table;
 @Table(name = "referees")
 public class Referee extends Volunteer {
 
-	private boolean isExpert;
+	private boolean expert;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JsonBackReference
+	@JsonBackReference("table-referees")
 	private CompetitionTable supervisesTable;
 
 	public Referee() {}
 
 	public boolean isExpert() {
-		return isExpert;
+		return expert;
 	}
 
 	public void setExpert(boolean expert) {
-		isExpert = expert;
+		this.expert = expert;
 	}
 
 	public CompetitionTable getSupervisesTable() {

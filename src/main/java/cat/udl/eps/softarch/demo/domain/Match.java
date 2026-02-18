@@ -1,5 +1,6 @@
 package cat.udl.eps.softarch.demo.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -22,10 +23,12 @@ public class Match extends UriEntity<Long> {
 
 	private LocalTime endTime;
 
+	@JsonBackReference("round-matches")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "round_id")
 	private Round round;
 
+	@JsonBackReference("table-matches")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "table_id")
 	private CompetitionTable competitionTable;
@@ -63,5 +66,13 @@ public class Match extends UriEntity<Long> {
 
 	public void setRound(Round round) {
 		this.round = round;
+	}
+
+	public CompetitionTable getCompetitionTable() {
+		return competitionTable;
+	}
+
+	public void setCompetitionTable(CompetitionTable competitionTable) {
+		this.competitionTable = competitionTable;
 	}
 }
