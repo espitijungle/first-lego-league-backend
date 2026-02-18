@@ -11,8 +11,8 @@ import lombok.EqualsAndHashCode;
 
 @Entity
 @Data
-@EqualsAndHashCode(callSuper = false)
-public class MediaContent {
+@EqualsAndHashCode(callSuper = true)
+public class MediaContent extends UriEntity<String> {
 
 	@Id
 	@NotBlank
