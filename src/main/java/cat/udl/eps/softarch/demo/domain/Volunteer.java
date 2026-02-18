@@ -10,7 +10,6 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

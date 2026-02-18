@@ -1,4 +1,5 @@
 package cat.udl.eps.softarch.demo.domain;
+
 import java.util.HashSet;
 import java.util.Set;
 import jakarta.persistence.Column;
