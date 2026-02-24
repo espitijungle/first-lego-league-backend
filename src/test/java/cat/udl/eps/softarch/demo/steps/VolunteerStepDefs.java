@@ -179,7 +179,7 @@ public class VolunteerStepDefs {
 				teamRepository.save(team);
 			}
 		} catch (Exception e) {
-			lastException = e; // captura la excepción para Cucumber
+			lastException = e; 
 		}
 	}
 

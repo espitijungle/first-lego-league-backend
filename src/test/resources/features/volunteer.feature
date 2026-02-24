@@ -40,9 +40,11 @@ Feature: Volunteer and Floater Management
     Then the floater creation should fail with validation error
 
   @Validation
-  Scenario: Cannot create floater without student code
-    When I try to create a floater with name "Test User" and email "test2@example.com" and phone "123456789" and student code ""
-    Then the floater creation should fail with validation error
+  Scenario: Cannot create floater with duplicate student code
+	Given I create a floater with name "Existing Floater", email "existing@example.com", phone "555666777" and student code "STU008"
+	And I save the floater
+	When I try to create a floater with name "Duplicate Floater" and email "duplicate@example.com", phone "888999000" and student code "STU008"
+  	Then the floater creation should fail with validation error
 
   @CRUD
   Scenario: Update floater details
@@ -116,5 +118,4 @@ Feature: Volunteer and Floater Management
     And I assign the floater "REM001" to team "RemoveTeam"
     When I remove the floater "REM001" from team "RemoveTeam"
     Then the team "RemoveTeam" should have 0 floaters assigned
-
 
