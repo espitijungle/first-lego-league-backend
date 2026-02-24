@@ -2,11 +2,16 @@ package cat.udl.eps.softarch.demo.domain;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
@@ -15,11 +20,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.JoinColumn;
-import java.util.HashSet;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -91,6 +91,7 @@ public class Team extends UriEntity<String> {
 		member.setTeam(this);
 	}
 
+
 	@ManyToMany
 	@JoinTable(
 			name = "team_coach",
@@ -99,7 +100,32 @@ public class Team extends UriEntity<String> {
 	@ToString.Exclude
 	private Set<Coach> trainedBy = new HashSet<>();
 
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinTable(
+			name = "team_floaters",
+			joinColumns = @JoinColumn(name = "team_name"),
+			inverseJoinColumns = @JoinColumn(name = "floater_id"))
+	@ToString.Exclude
+	private Set<Floater> floaters = new HashSet<>();
 
+
+
+	public void addFloater(Floater floater) {
+		if (floaters.contains(floater)) {
+			return;
+		}
+		if (floaters.size() >= 2) {
+			throw new IllegalStateException("A team cannot have more than 2 floaters");
+		}
+		floaters.add(floater);
+		floater.getAssistedTeams().add(this);
+	}
+
+	public void removeFloater(Floater floater) {
+		if (floater == null || !floaters.contains(floater)) {
+			return;
+		}
+		floaters.remove(floater);
+		floater.getAssistedTeams().remove(this);
+	}
 }
-
-
