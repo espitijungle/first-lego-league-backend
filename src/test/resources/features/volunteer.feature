@@ -43,7 +43,7 @@ Feature: Volunteer and Floater Management
 	Scenario: Cannot create floater with duplicate student code
 		Given I create a floater with name "Existing Floater", email "existing@example.com", phone "555666777" and student code "STU008"
 		And I save the floater
-		When I try to create a floater with name "Duplicate Floater" and email "duplicate@example.com", phone "888999000" and student code "STU008"
+		When I try to create a floater with name "Duplicate Floater" and email "duplicate@example.com" and phone "888999000" and student code "STU008"
 		Then the floater creation should fail with validation error
 
 	@CRUD

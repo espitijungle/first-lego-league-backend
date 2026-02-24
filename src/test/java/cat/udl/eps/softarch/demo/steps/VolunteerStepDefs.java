@@ -85,7 +85,6 @@ public class VolunteerStepDefs {
 		}
 	}
 
-	@When("I try to create a floater with name {string} and email {string}, phone {string} and student code {string}")
 	@When("I try to create a floater with name {string} and email {string} and phone {string} and student code {string}")
 	public void tryCreateInvalidFloater(String name, String email, String phone, String studentCode) {
 		try {
@@ -103,20 +102,35 @@ public class VolunteerStepDefs {
 	@Then("the floater creation should fail with validation error")
 	public void floaterCreationShouldFail() {
 		assertNotNull(lastException);
-
-		boolean isValidationException =
-			lastException instanceof ConstraintViolationException ||
-				lastException instanceof org.springframework.dao.DataIntegrityViolationException ||
-				(lastException instanceof TransactionSystemException &&
-					lastException.getCause() instanceof ConstraintViolationException);
-
-		assertTrue(isValidationException);
+		assertTrue(isValidationOrConstraintException(lastException));
+	}
+	private boolean isValidationOrConstraintException(Throwable ex) {
+		Throwable current = ex;
+		while (current != null) {
+			if (current instanceof ConstraintViolationException
+			|| current instanceof org.springframework.dao.DataIntegrityViolationException) {
+				return true;
+			}
+			current = current.getCause();
+			}
+		return false;
 	}
 
 	@Then("I should receive the error {string}")
 	public void verifyErrorMessage(String expectedMessage) {
 		assertNotNull(lastException, "No exception was captured");
-		assertTrue(lastException.getMessage().contains(expectedMessage));
+		assertTrue(findMessageInExceptionChain(lastException, expectedMessage),
+			"Error message '" + expectedMessage + "' not found in exception chain. Got: " + lastException.getMessage());
+	}
+	private boolean findMessageInExceptionChain(Throwable ex, String expectedMessage) {
+		Throwable current = ex;
+		while (current != null) {
+			if (current.getMessage() != null && current.getMessage().contains(expectedMessage)) {
+				return true;
+			}
+			current = current.getCause();
+		}
+		return false;
 	}
 
 	@When("I update the floater phone number to {string}")

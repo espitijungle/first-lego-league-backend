@@ -109,11 +109,12 @@ public class Team extends UriEntity<String> {
 	@ToString.Exclude
 	private Set<Floater> floaters = new HashSet<>();
 
-	public Set<Floater> getFloaters() {
-		return floaters;
-	}
+
 
 	public void addFloater(Floater floater) {
+		if (floaters.contains(floater)) {
+			return;
+		}
 		if (floaters.size() >= 2) {
 			throw new IllegalStateException("A team cannot have more than 2 floaters");
 		}

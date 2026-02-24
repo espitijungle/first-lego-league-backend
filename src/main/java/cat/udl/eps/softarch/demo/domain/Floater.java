@@ -7,18 +7,20 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 @Entity
 @Table(name = "floaters")
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class Floater extends Volunteer {
 
 
-	@NotBlank
+	@NotBlank(message = "Student code is mandatory")
 	@Column(unique = true)
 	private String studentCode;
 
